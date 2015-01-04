@@ -22,6 +22,11 @@ var binpacking = {
 
     initialize : function() {
         this.handleFileReader();
+        $("#run_button").click(this.run);
+    },
+
+    run : function() {
+
     }
 };
 
