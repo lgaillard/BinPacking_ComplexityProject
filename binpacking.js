@@ -10,11 +10,12 @@ var Bin = function(w, h) {
     this.layers = [];
 
     this.gBin = $("<div>").addClass("bin").css({
+        display: "inline-block",
         position: "relative",
         width: Settings.cellSize * w,
         height: Settings.cellSize * h,
         border: "1px solid black",
-        margin: Settings.cellSize
+        margin: Settings.cellSize *.25
     }).appendTo($("#output"));
     this.insertPiece(new Piece(2,1), 0, 0);
 };
