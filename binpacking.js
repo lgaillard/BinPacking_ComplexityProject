@@ -74,9 +74,7 @@ Bin.prototype.createLayer = function(h) {
 
 Bin.prototype.insertPiece = function(piece) {
     if(piece.width > this.width || piece.height > this.height) {
-        //TODO:
-        alert("Error: A piece is bigger than the bins");
-        return false;
+        throw "Error: A piece is bigger than the bins";
     }
 
     var inserted = false;
@@ -206,12 +204,17 @@ var BinPackingApp = {
     },
 
     insertPieces : function() {
-        if(this.bins.length < 1) {
-            this.createBin();
-        }
+        try {
+            if (this.bins.length < 1) {
+                this.createBin();
+            }
 
-        for(var i = 0; i < this.pieces.length; ++i) {
-            this.insertPiece(this.pieces[i]);
+            for (var i = 0; i < this.pieces.length; ++i) {
+                this.insertPiece(this.pieces[i]);
+            }
+        } catch(err) {
+            this.clearData();
+            alert(err);
         }
     },
 
