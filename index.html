@@ -11,12 +11,45 @@
     <script src="binpacking.js"></script>
 </head>
 <body>
+  <header>
+    <h1>2D Finite Bin Packing</h1>
+    <h3>Presented by :</h3>
+    <h3>Loïc Gaillard and Ludovic Cuny</h3>
+  </header>
 
-<input type="file" id="file_input" />
-<textarea id="input"></textarea>
-<input type="button" id="run_button" value="Run" />
+  <hr>
+  
+  <div id="mainContent">
+	<div id="reminder">
+    <div><span class="emph">Reminder</span> - data-input format :</div>
+    <div>3x3</div>
+	<div>1x2,1x2,2x1,2x1,1x1</div>
+	</div>
 
-<canvas id="canvas"></canvas>
+    <br/>
+
+	<table>
+	<thead>
+	  <tr>
+	    <th>Load a file</th>
+		<th>Write data</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+		<td><input type="file" id="file_input" /></td>
+		<td><textarea id="input"></textarea></td>
+	  </tr>
+	</tbody>
+	</table>
+    
+	<div id="run">
+    <input type="button" id="run_button" value="Run" />
+	</div>
+
+    <br/>
+    <canvas id="canvas"></canvas>
+  </div>
 
 </body>
 </html>
