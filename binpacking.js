@@ -148,8 +148,8 @@ var BinPackingApp = {
             return;
         }
 
-        this.binW = binSize[0];
-        this.binH = binSize[1];
+        this.binW = parseInt(binSize[0]);
+        this.binH = parseInt(binSize[1]);
 
 
         // Pieces
@@ -161,7 +161,7 @@ var BinPackingApp = {
                 return;
             }
 
-            this.pieces.push(new Piece(pieceSize[0], pieceSize[1]));
+            this.pieces.push(new Piece(parseInt(pieceSize[0]), parseInt(pieceSize[1])));
         }
     },
 
