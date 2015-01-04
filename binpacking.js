@@ -3,6 +3,28 @@ var Settings = {
     margin: 10
 };
 
+var Layer = function(w, h, y) {
+    this.width = w;
+    this.height = h;
+    this.availableW = w;
+    this.posY = y;
+};
+
+Layer.prototype.insertPiece = function(piece) {
+    var self = this;
+    if(piece.height > this.height || piece.width > this.availableW) {
+        return false;
+    }
+
+
+    var pos = {
+        x: self.width - self.availableW,
+        y: self.posY
+    };
+    this.availableW -= piece.width;
+    return pos;
+};
+
 var Bin = function(w, h) {
     this.width = w;
     this.height = h;
@@ -17,16 +39,9 @@ var Bin = function(w, h) {
         border: "1px solid black",
         margin: Settings.cellSize *.25
     }).appendTo($("#output"));
-    this.insertPiece(new Piece(2,1), 0, 0);
 };
 
-Bin.prototype.insertPiece = function(piece, x, y) {
-    if(piece.width > this.width || piece.height > this.height) {
-        //TODO:
-        alert("Error: A piece is bigger than the bins");
-        return;
-    }
-
+Bin.prototype.displayPiece = function(piece, x, y) {
     var color = "#" + String("000000" + (Math.floor(Math.random() * parseInt("FFFFFF", 16))).toString(16)).slice(-6);
     var gPiece = $("<div>").addClass("piece").css({
         position: "absolute",
@@ -35,9 +50,53 @@ Bin.prototype.insertPiece = function(piece, x, y) {
         width: Settings.cellSize * piece.width,
         height: Settings.cellSize * piece.height,
         background: color,
-        "box-shadow": "inset 0 0 0 1px rgba(0,0,0,0.2)"
+        "box-shadow": "inset 0 0 0 1px rgba(0,0,0,0.3)"
 
     }).appendTo(this.gBin);
+};
+
+Bin.prototype.createLayer = function(h) {
+    if(h > this.availableH) {
+        return false;
+    }
+
+    var posY = 0;
+    if(this.layers.length >= 1) {
+        var prevLayer = this.layers[this.layers.length - 1];
+        posY = parseInt(prevLayer.posY) + parseInt(prevLayer.height);
+    }
+    var layer = new Layer(this.width, h, posY);
+    this.layers.push(layer);
+    this.availableH -= h;
+
+    return layer;
+};
+
+Bin.prototype.insertPiece = function(piece) {
+    if(piece.width > this.width || piece.height > this.height) {
+        //TODO:
+        alert("Error: A piece is bigger than the bins");
+        return false;
+    }
+
+    var inserted = false;
+    for(var i = 0; i < this.layers.length; ++i) {
+        var pos = this.layers[i].insertPiece(piece);
+        if(pos) {
+            this.displayPiece(piece, pos.x, pos.y);
+            inserted = true;
+            break;
+        }
+    }
+
+    if(!inserted) {
+        var layer = this.createLayer(piece.height);
+        if (layer) {
+            inserted = this.insertPiece(piece);
+        }
+    }
+
+    return inserted;
 };
 
 var Piece = function(w, h) {
@@ -116,6 +175,7 @@ var BinPackingApp = {
         this.binH = 0;
         this.bins = [];
         this.pieces = [];
+        this.output.html("");
     },
 
     sortPieces : function() {
@@ -124,9 +184,34 @@ var BinPackingApp = {
         });
     },
 
+    createBin : function() {
+        var bin = new Bin(this.binW, this.binH);
+        this.bins.push(bin);
+        return bin;
+    },
+
+    insertPiece : function(piece) {
+        var inserted = false;
+        for(var i = 0; i < this.bins.length; ++i) {
+            inserted = this.bins[i].insertPiece(piece);
+            if(inserted) {
+                break;
+            }
+        }
+
+        if(!inserted) {
+            var bin = this.createBin();
+            inserted = bin.insertPiece(piece);
+        }
+    },
+
     insertPieces : function() {
         if(this.bins.length < 1) {
-            this.bins.push(new Bin(this.binW, this.binH));
+            this.createBin();
+        }
+
+        for(var i = 0; i < this.pieces.length; ++i) {
+            this.insertPiece(this.pieces[i]);
         }
     },
 
