@@ -34,13 +34,15 @@ hr {
 
 #reminder {
 	text-align: left;
-	width: 200px;
+	width: 250px;
 	margin: auto;
 }
 
 textarea {
 	width: 300px;
 	height: 50px;
+    font-family: "Courier";
+    font-size: .9em;
 }
 
 #run {
@@ -128,4 +130,27 @@ table td {
 	background: #fafafa;
 	background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#fafafa));
 	background: -moz-linear-gradient(top,  #fbfbfb,  #fafafa);
+}
+
+.emph {
+    font-weight: bold;
+}
+
+.ital {
+    font-style: italic;
+}
+
+.code {
+    margin-left: 10px;
+    font-family: "Courier";
+}
+
+#output-text {
+    font-weight: bold;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#output {
+    text-align: center;
 }

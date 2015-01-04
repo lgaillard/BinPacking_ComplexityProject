@@ -109,6 +109,7 @@ var BinPackingApp = {
     bins : [],
     pieces : [],
     output : null,
+    output_text : null,
 
     handleFileReader : function() {
         if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -174,6 +175,7 @@ var BinPackingApp = {
         this.bins = [];
         this.pieces = [];
         this.output.html("");
+        this.output_text.html("");
     },
 
     sortPieces : function() {
@@ -218,6 +220,10 @@ var BinPackingApp = {
         }
     },
 
+    countBins : function() {
+        this.output_text.html(this.bins.length + " Bins");
+    },
+
     initialize : function() {
         var self = this;
 
@@ -227,6 +233,7 @@ var BinPackingApp = {
         });
 
         this.output = $("#output");
+        this.output_text = $("#output-text");
     },
 
     run : function() {
@@ -234,6 +241,7 @@ var BinPackingApp = {
         this.readInput();
         this.sortPieces();
         this.insertPieces();
+        this.countBins();
     }
 };
 
